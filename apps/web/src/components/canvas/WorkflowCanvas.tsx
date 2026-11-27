@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import {
   Background,
   BackgroundVariant,
@@ -40,7 +40,8 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useStudioStore } from '../../store/useStudioStore'
 import type { SynthNodeType } from '../../types/workflow'
-import { exportGraphToMermaid, NODE_ACCENT_META, validateGraphClient } from '../../utils/layout'
+import { exportGraphToMermaid, NODE_ACCENT_META } from '../../utils/layout'
+import { selectGraphHealth } from '../../store/graphSelectors'
 import { GlowEdge } from './GlowEdge'
 import { StudioNode } from './StudioNode'
 
@@ -143,7 +144,7 @@ export function WorkflowCanvas() {
     nodeId?: string
   } | null>(null)
 
-  const health = useMemo(() => validateGraphClient(nodes, edges), [nodes, edges])
+  const health = useStudioStore(selectGraphHealth)
 
   useEffect(() => {
     const timer = setTimeout(() => {

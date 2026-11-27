@@ -28,7 +28,8 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useStudioStore } from '../../store/useStudioStore'
 import type { ClassifierCategory, SynthNode, SynthNodeType } from '../../types/workflow'
-import { computeDataLineage, NODE_ACCENT_META } from '../../utils/layout'
+import { NODE_ACCENT_META } from '../../utils/layout'
+import { selectLineage } from '../../store/graphSelectors'
 
 const NODE_ICONS: Record<SynthNodeType, React.FC<{ className?: string }>> = {
   input: PlaySquare,
@@ -49,8 +50,7 @@ export const StudioNode = memo(({ id, data, type, selected }: NodeProps<SynthNod
   const { t } = useTranslation()
   const language = useStudioStore((s) => s.language)
   const runtime = useStudioStore((s) => s.nodeRuntime[id])
-  const selectedNodeId = useStudioStore((s) => s.selectedNodeId)
-  const edges = useStudioStore((s) => s.edges)
+  const isDimmedByLineage = useStudioStore((s) => selectLineage(s)?.has(id) === false)
   const testingNodeId = useStudioStore((s) => s.testingNodeId)
   const testNodeIsolated = useStudioStore((s) => s.testNodeIsolated)
   const duplicateNode = useStudioStore((s) => s.duplicateNode)
@@ -99,10 +99,6 @@ export const StudioNode = memo(({ id, data, type, selected }: NodeProps<SynthNod
 
   const accent = NODE_ACCENT_META[nodeType] || NODE_ACCENT_META.llm
   const Icon = NODE_ICONS[nodeType] || Bot
-
-  // Data Lineage Highlighting: subtly dim nodes outside selected node's causal chain
-  const lineage = selectedNodeId ? computeDataLineage(selectedNodeId, edges) : null
-  const isDimmedByLineage = Boolean(lineage && !lineage.has(id))
 
   const status = runtime?.status || 'idle'
   const isTesting = testingNodeId === id

@@ -13,12 +13,14 @@ import {
 import { useTranslation } from 'react-i18next'
 import { useStudioStore } from '../../store/useStudioStore'
 import type { ClassifierCategory, InputFieldSchema, SynthNodeType } from '../../types/workflow'
-import { getUpstreamVariables, NODE_ACCENT_META, validateGraphClient } from '../../utils/layout'
+import { getUpstreamVariables, NODE_ACCENT_META } from '../../utils/layout'
+import { selectGraphHealth, selectInspectorNodes } from '../../store/graphSelectors'
 import { MarkdownViewer } from '../common/MarkdownViewer'
 
 export function NodeInspector() {
   const { t } = useTranslation()
-  const nodes = useStudioStore((s) => s.nodes)
+  const nodes = useStudioStore(selectInspectorNodes)
+  const health = useStudioStore(selectGraphHealth)
   const edges = useStudioStore((s) => s.edges)
   const workflowName = useStudioStore((s) => s.workflowName)
   const selectedNodeId = useStudioStore((s) => s.selectedNodeId)
@@ -36,7 +38,6 @@ export function NodeInspector() {
 
   // Rich Workflow Overview Card when no node is selected (zero empty void!)
   if (!node) {
-    const health = validateGraphClient(nodes, edges)
     const countByType = nodes.reduce<Record<string, number>>((acc, n) => {
       const k = n.type || 'llm'
       acc[k] = (acc[k] || 0) + 1
