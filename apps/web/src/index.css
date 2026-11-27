@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  body {
+    @apply bg-[#F5F7FB] text-slate-900 dark:bg-[#090C12] dark:text-slate-100 font-sans;
+  }
+}
+
+/* Precision Studio Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.24);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.45);
+}
+
+/* CRITICAL FIX: Override React Flow's built-in white box styling on 'input' & 'output' node types */
+.react-flow__node,
+.react-flow__node-input,
+.react-flow__node-output,
+.react-flow__node-default,
+.react-flow__node-group {
+  background: transparent !important;
+  border: none !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  width: auto !important;
+  border-radius: 16px !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  text-align: left !important;
+}
+
+.react-flow__node.selected,
+.react-flow__node-input.selected,
+.react-flow__node-output.selected {
+  box-shadow: none !important;
+}
+
+.react-flow__handle {
+  width: 12px !important;
+  height: 12px !important;
+  border: 2.5px solid #0b0f17 !important;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.14);
+  transition: transform 0.16s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.16s ease;
+}
+
+html:not(.dark) .react-flow__handle {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.16);
+}
+
+.react-flow__handle:hover {
+  transform: scale(1.32);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.7);
+}
+
+.react-flow__controls {
+  @apply !bg-white/95 dark:!bg-[#111724]/90 !backdrop-blur-xl !border !border-slate-200/80 dark:!border-white/10 !rounded-xl !shadow-xl overflow-hidden;
+}
+
+.react-flow__controls-button {
+  @apply !bg-transparent !border-b !border-slate-200/60 dark:!border-white/10 !text-slate-600 dark:!text-slate-300 hover:!bg-slate-100 dark:hover:!bg-white/10;
+}
+
+.react-flow__controls-button svg {
+  fill: currentColor !important;
+}
+
+.react-flow__minimap {
+  @apply !bg-white/90 dark:!bg-[#0F1521]/90 !backdrop-blur-xl !border !border-slate-200/80 dark:!border-white/10 !rounded-2xl !shadow-2xl overflow-hidden;
+}
+
+/* Studio Canvas Ambient Radial Lighting */
+.studio-canvas-bg {
+  background-color: #f5f7fb;
+  background-image:
+    radial-gradient(ellipse 60% 45% at 50% 0%, rgba(139, 92, 246, 0.08), transparent 70%),
+    radial-gradient(ellipse 45% 40% at 85% 90%, rgba(14, 165, 233, 0.07), transparent 70%);
+}
+
+html.dark .studio-canvas-bg {
+  background-color: #090c12;
+  background-image:
+    radial-gradient(ellipse 65% 48% at 48% 0%, rgba(124, 58, 237, 0.14), transparent 68%),
+    radial-gradient(ellipse 45% 40% at 88% 92%, rgba(14, 165, 233, 0.09), transparent 65%),
+    radial-gradient(ellipse 35% 35% at 10% 85%, rgba(16, 185, 129, 0.06), transparent 65%);
+}
+
+/* Active Edge Flowing Light Animation */
+@keyframes synthflow-dash {
+  from {
+    stroke-dashoffset: 32;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.edge-flow-active {
+  stroke-dasharray: 8 8;
+  animation: synthflow-dash 0.65s linear infinite;
+}
+
+/* Node Running Breathing Aura */
+@keyframes synthflow-breathe {
+  0%, 100% {
+    box-shadow: 0 0 0 1.5px var(--aura-color), 0 8px 28px -2px var(--aura-glow);
+  }
+  50% {
+    box-shadow: 0 0 0 4px var(--aura-ring), 0 12px 38px 4px var(--aura-glow);
+  }
+}
+
+.node-running-aura {
+  animation: synthflow-breathe 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer-slide {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(220%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer-slide 1.5s ease-in-out infinite;
+}
+
+/* Markdown Typography inside Output Cards */
+.sf-markdown h1 {
+  @apply text-xl font-bold tracking-tight mt-4 mb-2.5 pb-2 border-b border-slate-200 dark:border-white/10 text-slate-900 dark:text-white;
+}
+.sf-markdown h2 {
+  @apply text-base font-bold tracking-tight mt-4 mb-2 text-slate-900 dark:text-slate-100;
+}
+.sf-markdown h3 {
+  @apply text-sm font-semibold mt-3.5 mb-1.5 text-slate-800 dark:text-slate-100;
+}
+.sf-markdown h4 {
+  @apply text-xs font-semibold uppercase tracking-wide mt-3 mb-1 text-slate-700 dark:text-slate-300;
+}
+.sf-markdown p {
+  @apply text-[13px] leading-relaxed my-2 text-slate-700 dark:text-slate-300;
+}
+.sf-markdown ul {
+  @apply list-disc pl-5 my-2 space-y-1 text-[13px] text-slate-700 dark:text-slate-300;
+}
+.sf-markdown ol {
+  @apply list-decimal pl-5 my-2 space-y-1 text-[13px] text-slate-700 dark:text-slate-300;
+}
+.sf-markdown blockquote {
+  @apply border-l-[3px] border-violet-500 bg-violet-500/5 dark:bg-violet-500/10 pl-3.5 pr-3 py-2 my-3 rounded-r-xl text-[13px] text-slate-700 dark:text-slate-200;
+}
+.sf-markdown table {
+  @apply w-full border-collapse my-3 text-xs rounded-xl overflow-hidden border border-slate-200 dark:border-white/10;
+}
+.sf-markdown th {
+  @apply bg-slate-100/90 dark:bg-white/[0.05] text-left px-3 py-2 font-semibold border-b border-slate-200 dark:border-white/10 text-slate-800 dark:text-slate-100;
+}
+.sf-markdown td {
+  @apply px-3 py-2 border-b border-slate-200/70 dark:border-white/[0.06] text-slate-700 dark:text-slate-300 align-top;
+}
+.sf-markdown hr {
+  @apply my-4 border-slate-200 dark:border-white/10;
+}
+.sf-markdown :not(pre) > code {
+  @apply font-mono text-[11.5px] px-1.5 py-0.5 rounded-md bg-slate-100 dark:bg-white/[0.08] text-violet-600 dark:text-violet-300;
+}
+
+/* Highlight.js compact theme */
+.hljs-keyword, .hljs-selector-tag, .hljs-title { color: #c084fc; }
+.hljs-string, .hljs-attr, .hljs-addition { color: #34d399; }
+.hljs-number, .hljs-literal, .hljs-variable { color: #38bdf8; }
+.hljs-comment, .hljs-quote { color: #64748b; font-style: italic; }
+.hljs-built_in, .hljs-type { color: #fbbf24; }

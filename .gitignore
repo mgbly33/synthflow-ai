@@ -1,0 +1,28 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.pytest_cache/
+*.db
+*.db-journal
+*.sqlite3
+.secret.key
+
+# Node / Frontend
+node_modules/
+dist/
+dist-ssr/
+*.local
+*.tsbuildinfo
+
+# Environment
+.env
+.env.local
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

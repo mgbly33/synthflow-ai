@@ -1,0 +1,50 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: synthflow-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-synthflow}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-change_me_local_dev}
+      POSTGRES_DB: ${POSTGRES_DB:-synthflow}
+    volumes:
+      - synthflow_pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U synthflow -d synthflow"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build:
+      context: ./apps/api
+      dockerfile: Dockerfile
+    container_name: synthflow-api
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql+asyncpg://${POSTGRES_USER:-synthflow}:${POSTGRES_PASSWORD:-change_me_local_dev}@postgres:5432/${POSTGRES_DB:-synthflow}
+      FERNET_SECRET_KEY: ${FERNET_SECRET_KEY:-}
+      OPENAI_BASE_URL: ${OPENAI_BASE_URL:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      OPENAI_DEFAULT_MODEL: ${OPENAI_DEFAULT_MODEL:-deepseek-chat}
+      CORS_ORIGINS: http://localhost:8080,http://127.0.0.1:8080,http://localhost:5173
+      DEMO_STREAM_DELAY_MS: ${DEMO_STREAM_DELAY_MS:-28}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: synthflow-web
+    restart: unless-stopped
+    depends_on:
+      - api
+    ports:
+      - "8080:80"
+
+volumes:
+  synthflow_pgdata:

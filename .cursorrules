@@ -1,0 +1,10 @@
+You are developing SynthFlow — an AI Agent & Visual Workflow Orchestration Engine strictly isolated inside `projects/synthflow-ai/`.
+
+Constraints:
+1. Keep all files, virtualenvs, node_modules, databases, and scripts strictly inside `projects/synthflow-ai/`.
+2. Backend (`apps/api`): Python 3.11+, FastAPI, SQLAlchemy 2.0 Async (SQLite aiosqlite default, PostgreSQL asyncpg compatible), Pydantic v2, httpx AsyncClient, sse-starlette, cryptography.fernet.
+3. Frontend (`apps/web`): React 19, TypeScript, Vite, Tailwind CSS, @xyflow/react, Zustand, react-markdown, remark-gfm, lucide-react, i18next.
+4. Support both zero-key realistic demo streaming mode and real OpenAI-compatible streaming APIs.
+5. Encrypt all API keys with Fernet before persistence and only expose masked keys via API.
+6. Enforce SSRF protection in HTTP Tool node execution.
+7. Support bilingual UI (zh / en) and dark/light studio themes.
